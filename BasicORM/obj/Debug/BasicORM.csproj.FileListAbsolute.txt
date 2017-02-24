@@ -1,0 +1,6 @@
+c:\users\konshensx\documents\visual studio 2013\Projects\BasicORM\BasicORM\bin\Debug\BasicORM.exe.config
+c:\users\konshensx\documents\visual studio 2013\Projects\BasicORM\BasicORM\obj\Debug\BasicORM.csprojResolveAssemblyReference.cache
+c:\users\konshensx\documents\visual studio 2013\Projects\BasicORM\BasicORM\bin\Debug\BasicORM.exe
+c:\users\konshensx\documents\visual studio 2013\Projects\BasicORM\BasicORM\bin\Debug\BasicORM.pdb
+c:\users\konshensx\documents\visual studio 2013\Projects\BasicORM\BasicORM\obj\Debug\BasicORM.exe
+c:\users\konshensx\documents\visual studio 2013\Projects\BasicORM\BasicORM\obj\Debug\BasicORM.pdb

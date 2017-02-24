@@ -1,0 +1,25 @@
+﻿NOTES ABOUT TJIS SO CALLED LIBRARY 
+-ITable Interface :
+	- Fields :
+		* ID
+		* TableName
+	- Methods :
+		* Save(ITable object)
+		* IEnumerable<ITable> GetAll()
+		* ITable Get(int ID)
+		* int Update(ITable object)
+		* int Remove(ITable object)
+
+	- Each table has an ID and a name
+	- There should be a class the implements the ITable interface and all the other table gonna inherite directly from the Table Class
+
+
+-Methods :
+	- Get method
+		* Each class has a get method which is inhereted from the Table class
+		* How does the function know which class it should return
+		* I cannot return the interface ITable because it cannot be used as variable (ITable is a type)
+
+	- GetAll method
+		* I need an instance of the object im trying to return so i can add it or yield it to a IEnumerable.
+		* I need to iterate through the properties of the object im trying to return so that i can fill the values in before yeilding it to the IEnumerable.
