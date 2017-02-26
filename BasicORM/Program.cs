@@ -14,12 +14,10 @@ namespace BasicORM
             sw.Start();
 
             Person personObject = new Person();
-            personObject.FirstName = "Mohammed";
-            personObject.LastName = "Baza";
-            personObject.CIN = "FC53925";
-            personObject.Age = 21;
 
-            personObject.Save();
+            personObject.Get(1);
+
+            personObject.Remove();
 
             
             Console.WriteLine("Time elapsed: " + sw.ElapsedMilliseconds + "ms");

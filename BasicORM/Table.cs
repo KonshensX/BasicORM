@@ -95,7 +95,8 @@ namespace BasicORM
                             {
                                 foreach (PropertyInfo property in this.GetType().GetProperties())
                                 {
-                                    Console.WriteLine(property.Name + " From the data reader " + myReader[property.Name.ToLower()]);
+                                    if (!(myReader[property.Name.ToLower()] is DBNull))
+                                        property.SetValue(this, myReader[property.Name.ToLower()]);
                                 }
                             }
                         }
@@ -114,9 +115,18 @@ namespace BasicORM
             throw new NotImplementedException();
         }
 
-        public bool Remove(ITable table)
+        //TODO:
+        public bool Remove()
         {
-            throw new NotImplementedException();
+            string myQuery = this.GenerateDeleteQuery();
+
+            using (MySqlCommand myCommand = new MySqlCommand(myQuery, this.DatabaseObject.GetConnection()))
+            {
+                this.DatabaseObject.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", this.GetType().GetProperty("ID").GetValue(this, null));
+
+                return (myCommand.ExecuteNonQuery() == 1) ? true : false;
+            }
         }
 
         /// <summary>
@@ -197,6 +207,13 @@ namespace BasicORM
                     myQuery += ",";
             }
             return myQuery += ");";
+        }
+
+        private string GenerateDeleteQuery()
+        {
+            string myQuery = String.Format("DELETE FROM {0} WHERE id = @id", this.TableName);
+
+            return myQuery;
         }
     }
 }

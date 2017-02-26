@@ -38,9 +38,8 @@ namespace BasicORM
         /// <summary>
         /// Remove the item
         /// </summary>
-        /// <param name="table"></param>
         /// <returns></returns>
-        bool Remove(ITable table);
+        bool Remove();
 
         /// <summary>
         /// Gets the last ID
