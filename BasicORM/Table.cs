@@ -21,6 +21,10 @@ namespace BasicORM
             ID = GetLastID() + 1;
         }
 
+        /// <summary>
+        /// Save the record
+        /// </summary>
+        /// <returns></returns>
         public bool Save()
         {
             Stopwatch sw = new Stopwatch();
@@ -46,7 +50,10 @@ namespace BasicORM
             return true;
         }
 
-        //TODO
+        /// <summary>
+        /// Get all records 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ITable> GetAll()
         {
             string query = "SELECT * FROM " + TableName;
@@ -75,7 +82,11 @@ namespace BasicORM
             }
         }
 
-        //TODO
+        /// <summary>
+        /// Get the object coresponding to the given ID
+        /// </summary>
+        /// <param name="ID">ID of the record</param>
+        /// <returns></returns>
         public ITable Get(int ID)
         {
             string query = "SELECT * FROM " + TableName + " WHERE id = @id";
@@ -108,7 +119,10 @@ namespace BasicORM
 
             return this;
         }
-        //TODO
+        /// <summary>
+        /// Update the record
+        /// </summary>
+        /// <returns></returns>
         public bool Update()
         {
             string myQuery = this.GenerateUpdateQuery();
@@ -126,7 +140,10 @@ namespace BasicORM
             }
         }
 
-        //TODO:
+        /// <summary>
+        /// Remove the record 
+        /// </summary>
+        /// <returns></returns>
         public bool Remove()
         {
             string myQuery = this.GenerateDeleteQuery();
@@ -141,7 +158,7 @@ namespace BasicORM
         }
 
         /// <summary>
-        /// Gets the last ID in the table
+        /// Gets the last ID in the records
         /// </summary>
         /// <returns></returns>
         public int GetLastID()
