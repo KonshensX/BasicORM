@@ -75,7 +75,6 @@ namespace BasicORM
             }
         }
 
-
         //TODO
         public ITable Get(int ID)
         {
@@ -109,10 +108,22 @@ namespace BasicORM
 
             return this;
         }
-
-        public bool Update(ITable table)
+        //TODO
+        public bool Update()
         {
-            throw new NotImplementedException();
+            string myQuery = this.GenerateUpdateQuery();
+            Console.WriteLine(myQuery);
+
+            using (MySqlCommand myCommand = new MySqlCommand(myQuery, this.DatabaseObject.GetConnection()))
+            {
+                this.DatabaseObject.OpenConnection();
+                foreach (PropertyInfo property in this.GetType().GetProperties())
+                {
+                    myCommand.Parameters.AddWithValue(String.Format("@{0}", property.Name.ToLower()), property.GetValue(this, null));
+                }
+
+                return (myCommand.ExecuteNonQuery() == 1) ? true : false;
+            }
         }
 
         //TODO:
@@ -214,6 +225,24 @@ namespace BasicORM
             string myQuery = String.Format("DELETE FROM {0} WHERE id = @id", this.TableName);
 
             return myQuery;
+        }
+
+        private string GenerateUpdateQuery()
+        {
+            string myQuery = "UPDATE " + TableName + " SET ";
+            int propertiesArrayLength = this.GetType().GetProperties().GetLength(0);
+
+            for (int count = 0; count < propertiesArrayLength; count++)
+            {
+                if (this.GetType().GetProperties()[count].Name == "ID")
+                    continue;
+
+                var tempName = this.GetType().GetProperties()[count].Name.ToLower();
+                myQuery += String.Format("{0} = @{1}", tempName, tempName);
+                if (count != propertiesArrayLength - 2)
+                    myQuery += ", ";
+            }
+            return myQuery += " WHERE id = @id";
         }
     }
 }

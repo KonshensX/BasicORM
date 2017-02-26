@@ -15,9 +15,11 @@ namespace BasicORM
 
             Person personObject = new Person();
 
-            personObject.Get(1);
+            personObject.Get(2);
 
-            personObject.Remove();
+            personObject.CIN = "FCXXXX";
+
+            personObject.Update();
 
             
             Console.WriteLine("Time elapsed: " + sw.ElapsedMilliseconds + "ms");

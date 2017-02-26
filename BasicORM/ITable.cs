@@ -33,7 +33,7 @@ namespace BasicORM
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
-        bool Update(ITable table);
+        bool Update();
 
         /// <summary>
         /// Remove the item
