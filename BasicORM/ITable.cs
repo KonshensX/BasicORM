@@ -13,7 +13,7 @@ namespace BasicORM
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
-        bool Save(ITable table);
+        bool Save();
 
         /// <summary>
         /// Get all the data 

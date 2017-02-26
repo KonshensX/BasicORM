@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace BasicORM
 {
@@ -20,13 +21,28 @@ namespace BasicORM
             ID = GetLastID() + 1;
         }
 
-        public bool Save(ITable table)
+        public bool Save()
         {
-            //TODO: Fix the query
-            foreach (PropertyInfo property in typeof(ITable).GetProperties())
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            string myQuery = this.GenerateInsertQuery();
+
+            using (MySqlCommand myCommand = new MySqlCommand(myQuery, this.DatabaseObject.GetConnection()))
             {
-                Console.WriteLine("Property name: {0} -- Property Value: {1}", property.Name, property.GetValue(table, null));
+                this.DatabaseObject.OpenConnection();
+                foreach (PropertyInfo property in this.GetType().GetProperties())
+                {
+                    myCommand.Parameters.AddWithValue(("@" + property.Name.ToLower()), property.GetValue(this, null));
+
+                }
+
+                var result = (myCommand.ExecuteNonQuery() == 1)? true : false;
             }
+
+            
+            sw.Stop();
+            
+            Console.WriteLine("Time Elapsed: {0} ms", sw.ElapsedMilliseconds);
             return true;
         }
 
@@ -48,11 +64,10 @@ namespace BasicORM
                             {
                                 foreach (PropertyInfo property in this.GetType().GetProperties())
                                 {
-                                    property.SetValue(null, myReader[property.Name.ToLower()]);
+                                    //TODO: Set the value of the properties. DONE!!!!
+                                    property.SetValue(this, myReader[property.Name.ToLower()]);
                                 }
                             }
-                            //Iterate thorugh the properties of this
-
                             yield return this;
                         }
                     }
@@ -154,6 +169,34 @@ namespace BasicORM
                 }
             }
             
+        }
+
+        /// <summary>
+        /// Generates the insert query for the object
+        /// </summary>
+        /// <returns></returns>
+        private string GenerateInsertQuery()
+        {
+            //TODO: Generate the query first
+            string myQuery = "INSERT INTO " + TableName + " (";
+            int propertiesArrayLength = this.GetType().GetProperties().GetLength(0);
+
+            for (int count = 0; count < propertiesArrayLength; count++)
+            {
+                myQuery += ("`" + this.GetType().GetProperties()[count].Name.ToLower() + "`");
+                if (count != propertiesArrayLength - 1)
+                    myQuery += ",";
+            }
+
+            myQuery += ") VALUES (";
+
+            for (int count = 0; count < propertiesArrayLength; count++)
+            {
+                myQuery += ("@" + this.GetType().GetProperties()[count].Name.ToLower());
+                if (count != propertiesArrayLength - 1)
+                    myQuery += ",";
+            }
+            return myQuery += ");";
         }
     }
 }

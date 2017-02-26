@@ -13,18 +13,13 @@ namespace BasicORM
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Post postObject = new Post();
-            foreach (Post post in postObject.GetAll())
-            {
-                Console.WriteLine("{0}\t{1}\t{2}\t{3}", post.ID, post.TableName, post.Title, post.Publisher);
+            Person personObject = new Person();
+            personObject.FirstName = "Mohammed";
+            personObject.LastName = "Baza";
+            personObject.CIN = "FC53925";
+            personObject.Age = 21;
 
-
-                Console.WriteLine("###################");
-            }
-
-            Person person = new Person();
-
-            person.GetAll();
+            personObject.Save();
 
             
             Console.WriteLine("Time elapsed: " + sw.ElapsedMilliseconds + "ms");
