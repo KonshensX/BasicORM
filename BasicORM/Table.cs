@@ -89,6 +89,7 @@ namespace BasicORM
         /// <returns></returns>
         public ITable Get(int ID)
         {
+            //TODO: Working on foreign keys 
             string query = "SELECT * FROM " + TableName + " WHERE id = @id";
             using (MySqlCommand myCommand = new MySqlCommand(query, this.DatabaseObject.GetConnection()))
             {
@@ -105,8 +106,13 @@ namespace BasicORM
                             {
                                 foreach (PropertyInfo property in this.GetType().GetProperties())
                                 {
-                                    if (!(myReader[property.Name.ToLower()] is DBNull))
-                                        property.SetValue(this, myReader[property.Name.ToLower()]);
+                                    //Here im gonna check if the property is of type
+                                    if (typeof(ITable).IsAssignableFrom(property.GetType()))
+                                    {
+                                        Console.WriteLine("Type of property is: {0}", property.GetType());
+                                    }
+                                    //if (!(myReader[property.Name.ToLower()] is DBNull))
+                                    //    property.SetValue(this, myReader[property.Name.ToLower()]);
                                 }
                             }
                         }
@@ -190,7 +196,15 @@ namespace BasicORM
         /// </summary>
         public string GetTableName()
         {
-            return this.GetType().Name.ToLower() + "s";
+            var name = this.GetType().Name;
+            //Check if the last char is an y.
+            if (name[name.Length - 1] == 'y')
+            {
+                
+                return name.TrimEnd('y').ToLower() + "ies";
+            }
+            //Generate the last name
+            return name.ToLower() + "s";
         }
 
         /// <summary>

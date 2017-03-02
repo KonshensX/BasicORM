@@ -13,18 +13,11 @@ namespace BasicORM
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Person personObject = new Person();
+            //Post postObject = new Post();
+            //postObject.Get(1);
 
-            personObject.Get(1);
-
-            personObject.Update();
-
-            personObject.Remove();
-
-            personObject.GetAll();
-
-            personObject.Save();
-
+            Category categoryObject = new Category();
+            Console.WriteLine("Type is: {0}", categoryObject.GetType());
             
             Console.WriteLine("Time elapsed: " + sw.ElapsedMilliseconds + "ms");
             Console.ReadKey();
