@@ -106,13 +106,24 @@ namespace BasicORM
                             {
                                 foreach (PropertyInfo property in this.GetType().GetProperties())
                                 {
-                                    //Here im gonna check if the property is of type
-                                    if (typeof(ITable).IsAssignableFrom(property.GetType()))
+                                    String myInterfaceString = typeof(ITable).FullName;
+
+                                    Type[] myInterfaces = property.PropertyType.FindInterfaces
+                                        (
+                                            new TypeFilter(InterfaceFilter),
+                                            myInterfaceString
+                                        );
+                                    if (myInterfaces.Length > 0)
                                     {
-                                        Console.WriteLine("Type of property is: {0}", property.GetType());
+                                        // The property implements the ITable interface
+                                        // Get the foreign ID from the database 
+
+                                        // Get the item from the database 
                                     }
-                                    //if (!(myReader[property.Name.ToLower()] is DBNull))
-                                    //    property.SetValue(this, myReader[property.Name.ToLower()]);
+                                    else
+                                    {
+                                        // Get the data directly from the database 
+                                    }
                                 }
                             }
                         }
@@ -120,9 +131,6 @@ namespace BasicORM
                 }
                 
             }
-
-            Console.WriteLine("This is the ID ou entered: {0}", ID);
-
             return this;
         }
         /// <summary>
@@ -274,6 +282,13 @@ namespace BasicORM
                     myQuery += ", ";
             }
             return myQuery += " WHERE id = @id";
+        }
+
+        private static bool InterfaceFilter(Type typeObject, Object critereaObject)
+        {
+            if (typeObject.ToString() == critereaObject.ToString())
+                return true;
+            return false;
         }
     }
 }

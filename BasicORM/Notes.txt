@@ -32,13 +32,24 @@
 	- Custom exception that im gonna have to handle is when the given ID doesn't correspond to any record in the database.
 
 *----------------------------- WORKING ON THE FOREIGN KEYS 02/03/2017 -----------------------------*
-- How am i going to tacle this??
+- How am i going to tackle this??
 	* First things first the database should be ready for the this which means the foreign key relationship is already made.
 	* I need to check if the property is of type ITable. 
 	* If the above is true then this must be done:
-		* Get the ID from the the database.
+		* Get the ID from the the database. which id was i talking about ??
 		* Call the get method in order to get the corresponding item.
 
 	* WHAT I CHANGED :
 		* The table name method was updated to handle the entities that ends with 'Y'. For example 'Category' => 'Categories'.
 		* In that case i need to delete the 'y' char and repalce with an 'ies'.
+
+	* PROBLEMS I RAN INTO
+		* Checking if the property is of type ITable always returns false what im guessing is that the PropertyInfo is not the same as checking the object it self 
+		
+*----------------------------- BACK AFTER A LONG TIME 07/28/2017 -----------------------------*
+- I have no idea what i was doing before or where i stopped 
+	* Stuff i fixed:
+		* Check if the property is of type ITable (Does it implement the inteface ITable)
+	* I need to figure out where am i gonna use this 
+		* This could be used in the Get() function:
+			_ When retreving data from the database, if the property implements the interface ITable then i need to call get method of that property

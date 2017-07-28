@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BasicORM
 {
-    public interface ITable
+    public interface ITable 
     {
         /// <summary>
         /// Save the object 

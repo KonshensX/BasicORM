@@ -45,6 +45,7 @@
     <Compile Include="Author.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Fuck.cs" />
     <Compile Include="ITable.cs" />
     <Compile Include="MyClass.cs" />
     <Compile Include="Person.cs" />
