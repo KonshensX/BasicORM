@@ -71,8 +71,33 @@ namespace BasicORM
                             {
                                 foreach (PropertyInfo property in this.GetType().GetProperties())
                                 {
-                                    //TODO: Set the value of the properties. DONE!!!!
-                                    property.SetValue(this, myReader[property.Name.ToLower()]);
+                                    if (this.InterfaceImplentationChecker(property))
+                                    {
+                                        // TODO: 
+                                        /**/
+                                        // Get the constructor and create an instance of MagicClass 
+                                        ConstructorInfo classConstructor = property.PropertyType.GetConstructor(Type.EmptyTypes);
+                                        object magicClassObject = classConstructor.Invoke(new object[]{});
+
+                                        // Get the Get method and invoke with a parameter value from the reader
+                                        MethodInfo magicMethod = property.PropertyType.GetMethod("Get");
+
+                                        // Get the value from the reader
+                                        string name = property.Name.ToLower();
+                                        int foreignId = (int)myReader[String.Format("{0}_id", name)];
+                                        // This is what'what's returned from the function 
+                                        // I need to pass the value from the reader
+                                        object magicValue = magicMethod.Invoke(magicClassObject, new object[]{foreignId});
+
+                                        // Set the value to the property 
+                                        property.SetValue(this, magicValue);
+                                        
+                                    }
+                                    else
+                                    {
+                                        //TODO: Set the value of the properties. DONE!!!!
+                                        property.SetValue(this, myReader[property.Name.ToLower()]);
+                                    }
                                 }
                             }
                             yield return this;
@@ -104,16 +129,11 @@ namespace BasicORM
                         {
                             if (typeof(ITable).IsAssignableFrom(this.GetType()))
                             {
+                                // I don't think this can go to the function
                                 foreach (PropertyInfo property in this.GetType().GetProperties())
                                 {
-                                    String myInterfaceString = typeof(ITable).FullName;
-
-                                    Type[] myInterfaces = property.PropertyType.FindInterfaces
-                                        (
-                                            new TypeFilter(InterfaceFilter),
-                                            myInterfaceString
-                                        );
-                                    if (myInterfaces.Length > 0)
+                                    
+                                    if (this.InterfaceImplentationChecker(property))
                                     {
                                         // The property implements the ITable interface
                                         // Get the foreign ID from the database 
@@ -122,7 +142,8 @@ namespace BasicORM
                                     }
                                     else
                                     {
-                                        // Get the data directly from the database 
+                                        // Get the data directly from the database and set it to the property
+                                        property.SetValue(this, myReader[property.Name.ToLower()]);
                                     }
                                 }
                             }
@@ -289,6 +310,24 @@ namespace BasicORM
             if (typeObject.ToString() == critereaObject.ToString())
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// Checks if the property implements the ITable interface
+        /// </summary>
+        /// <param name="property">the property that will be checked</param>
+        /// <returns>Boolean</returns>
+        private bool InterfaceImplentationChecker(PropertyInfo property)
+        {
+            String myInterfaceString = typeof(ITable).FullName;
+             
+            Type[] myInterfaces = property.PropertyType.FindInterfaces
+                (
+                    new TypeFilter(InterfaceFilter),
+                    myInterfaceString
+                ); 
+
+            return myInterfaces.Length > 0;
         }
     }
 }

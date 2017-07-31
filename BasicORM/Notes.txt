@@ -52,4 +52,9 @@
 		* Check if the property is of type ITable (Does it implement the inteface ITable)
 	* I need to figure out where am i gonna use this 
 		* This could be used in the Get() function:
-			_ When retreving data from the database, if the property implements the interface ITable then i need to call get method of that property
+			_ When retreving data from the database, if the property implements the interface ITable then i need to call get method of that property.
+			_ I need to refactor the implementation checker to a function so i can use in multiple places.
+
+	* Refactoring the implementation checker to a function ideas:
+		* The foreach goes the through the properties so i need to keep it
+		* The properties are being used so they might need to be passed to the function 
